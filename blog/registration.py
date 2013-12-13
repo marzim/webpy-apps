@@ -35,7 +35,7 @@ class registration:
 
     def POST(self):
         f = registration_form()
-        if not f.valiates():
+        if not f.validates():
             return render.registration(f)
         #else:
             # TODO: should show the home page
