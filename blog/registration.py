@@ -37,5 +37,5 @@ class register:
         f = register_form()
         if not f.valiates():
             return render.register(f)
-        else:
+        #else:
             # TODO: should show the home page
