@@ -31,12 +31,12 @@ class register:
     def GET(self):
         # do $:f.render() in the template
         f = register_form()
-        return render.register(f)
+        return render.registration(f)
 
     def POST(self):
         f = register_form()
         if not f.validates():
-            return render.register(f)
+            return render.registration(f)
         else:
             # TODO: should show the home page
             raise web.seeother('/')
