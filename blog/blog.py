@@ -12,6 +12,7 @@
 """ Basic blog using webpy 0.3 """
 import web
 import model
+import registration
 
 ### Url mappings
 
@@ -52,7 +53,7 @@ class Login:
 class Register:
     def GET(self):
         """Registration page"""
-        return render.registration()
+        return render.registration(registration)
 
 class New:
     form = web.form.Form(
