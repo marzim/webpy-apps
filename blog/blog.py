@@ -50,11 +50,6 @@ class Login:
         """Login page"""
         return render.login()
 
-class Register:
-    def GET(self):
-        """Registration page"""
-        return render.registration(registration)
-
 class New:
     form = web.form.Form(
         web.form.Textbox('title', web.form.notnull,
