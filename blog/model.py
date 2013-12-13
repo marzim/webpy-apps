@@ -11,7 +11,7 @@
 
 import web, datetime
 
-db = web.database(dbn='postgres', user='postgres', pw='mustard_180', db='blog')
+db = web.database(dbn='mysql', db='marzim83$blog', user='marzim83', pw='mustard_180', host='mysql.server')
 
 def get_posts():
     return db.select('entries', order='id DESC')
