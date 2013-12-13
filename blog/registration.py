@@ -12,7 +12,7 @@
 import web
 from web import form
 
-render = web.template.render('templates')
+#render = web.template.render('templates')
 
 vpass = form.regexp(r".{3,20}$", 'must be between 3 and 20 characters')
 vemail = form.regexp(r".*@.*", "must be a valid email address")
@@ -27,15 +27,16 @@ validators = [
 form.Validator("Password didn't match", lambda i: i.password == i.password2)]
 )
 
-class registration:
+class register:
     def GET(self):
         # do $:f.render() in the template
-        f = registration_form()
-        return render.registration(f)
+        f = register_form()
+        return render.register(f)
 
     def POST(self):
-        f = registration_form()
+        f = register_form()
         if not f.validates():
-            return render.registration(f)
-        #else:
+            return render.register(f)
+        else:
             # TODO: should show the home page
+            raise web.seeother('/')
