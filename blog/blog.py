@@ -17,6 +17,7 @@ import model
 
 urls = (
 '/', 'Index',
+'/login','Login',
 '/view/(\d+)', 'View',
 '/new', 'New',
 '/delete/(\d+)', 'Delete',
@@ -28,7 +29,7 @@ t_globals = {
  'datestr': web.datestr
  }
 
-render = web.template.render('templates', base='base', globals=t_globals)
+render = web.template.render('/home/marzim83/myblog/webpy-apps/blog/templates', base='base', globals=t_globals)
 
 class Index:
     def GET(self):
@@ -41,6 +42,11 @@ class View:
         """View single post"""
         post = model.get_post(int(id))
         return render.view(post)
+
+class Login:
+    def GET(self):
+        """Login page"""
+        return render.login()
 
 class New:
     form = web.form.Form(
@@ -85,7 +91,5 @@ class Edit:
         raise web.seeother('/')
 
 app = web.application(urls, globals())
-
-if __name__ == '__main__':
-    app.run()
+application = app.wsgifunc()
 
