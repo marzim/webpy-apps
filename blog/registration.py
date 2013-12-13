@@ -27,15 +27,15 @@ validators = [
 form.Validator("Password didn't match", lambda i: i.password == i.password2)]
 )
 
-class register:
+class registration:
     def GET(self):
         # do $:f.render() in the template
-        f = register_form()
-        return render.register(f)
+        f = registration_form()
+        return render.registration(f)
 
     def POST(self):
-        f = register_form()
+        f = registration_form()
         if not f.valiates():
-            return render.register(f)
+            return render.registration(f)
         #else:
             # TODO: should show the home page
