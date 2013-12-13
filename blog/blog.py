@@ -53,7 +53,8 @@ class Login:
 class Register:
     def GET(self):
         """Registration page"""
-        return render.registration(registration)
+        my_register = registration_form()
+        return render.registration(my_register)
 
 class New:
     form = web.form.Form(
