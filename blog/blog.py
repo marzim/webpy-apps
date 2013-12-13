@@ -18,6 +18,7 @@ import model
 urls = (
 '/', 'Index',
 '/login','Login',
+'/register', 'Register',
 '/view/(\d+)', 'View',
 '/new', 'New',
 '/delete/(\d+)', 'Delete',
@@ -47,6 +48,11 @@ class Login:
     def GET(self):
         """Login page"""
         return render.login()
+
+class Register:
+    def GET(self):
+        """Registration page"""
+        return render.registration()
 
 class New:
     form = web.form.Form(
