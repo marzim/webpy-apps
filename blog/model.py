@@ -31,3 +31,21 @@ def del_post(id):
 def update_post(id, title, text):
     db.update('entries', where="id=$id", vars=locals(), title=title, content=text)
 
+def get_users():
+    return db.select('users', order='id DESC')
+
+def get_user(user):
+    try:
+        return db.select('users', where='user=$user', vars=locals())[0]
+    except IndexError:
+        return None
+
+def new_user(user, pwd, email):
+    db.insert('users', user=user, pwd=pwd, email=email)
+
+def del_user(user):
+    db.delete('users', where="user=$user", vars=locals())
+
+def update_user(user, pwd, email):
+    db.update('users', where="user=$user", vars=locals(), pwd=pwd, email=email)
+

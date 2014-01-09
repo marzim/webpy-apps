@@ -11,8 +11,7 @@
 
 import web
 from web import form
-
-#render = web.template.render('templates')
+from web.template import render
 
 vpass = form.regexp(r".{3,20}$", 'must be between 3 and 20 characters')
 vemail = form.regexp(r".*@.*", "must be a valid email address")
