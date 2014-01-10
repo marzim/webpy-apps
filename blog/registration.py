@@ -11,6 +11,7 @@
 
 import web
 from web import form
+import hashlib
 from web.template import render
 
 class Register:
