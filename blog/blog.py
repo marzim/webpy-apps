@@ -19,6 +19,7 @@ web.config.debug = False
 urls = (
 '/', 'Index',
 '/login','Login',
+'/logout','Log out',
 '/register', 'Register',
 '/view/(\d+)', 'View',
 '/new', 'New',
@@ -27,11 +28,23 @@ urls = (
 )
 
 ### Templates
+
+app = web.application(urls, globals())
+store = web.session.DiskStore('sessions')
+session = web.session.Session(app, store, initializer={'login': 0, 'privilege': 0})
+
 t_globals = {
- 'datestr': web.datestr
+ 'datestr': web.datestr,
+ 'session': session
  }
 
 render = web.template.render('/home/marzim83/myblog/webpy-apps/blog/templates', base='base', globals=t_globals)
+
+def logged():
+    if session.login == 1:
+        return True
+    else:
+        return False
 
 class Index:
     def GET(self):
@@ -85,6 +98,7 @@ class Register:
 
 
 class New:
+
     form = web.form.Form(
         web.form.Textbox('title', web.form.notnull,
             size=30,
@@ -96,6 +110,9 @@ class New:
     )
 
     def GET(self):
+        if not logged():
+            raise web.seeother('/')
+
         form = self.form()
         return render.new(form)
 
@@ -107,12 +124,19 @@ class New:
         raise web.seeother('/')
 
 class Delete:
+    def GET(self, id):
+        if not logged():
+            raise web.seeother('/')
+
     def POST(self, id):
         model.del_post(int(id))
         raise web.seeother('/')
 
 class Edit:
     def GET(self, id):
+        if not logged():
+            raise web.seeother('/')
+
         post = model.get_post(int(id))
         form = New.form()
         form.fill(post)
@@ -126,6 +150,6 @@ class Edit:
         model.update_post(int(id), form.d.title, form.d.content)
         raise web.seeother('/')
 
-app = web.application(urls, globals())
+
 application = app.wsgifunc()
 

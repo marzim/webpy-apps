@@ -7,6 +7,7 @@ $for post in posts:
     <li>
         <a href="/view/$post.id">$post.title</a>
         from $datestr(post.posted_on)
-        <a href="/edit/$post.id">Edit</a>
+        $if session.login == 1:
+            <a href="/edit/$post.id">Edit</a>
     </li>
 </ul>
