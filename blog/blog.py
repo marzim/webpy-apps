@@ -18,13 +18,13 @@ from web import form
 web.config.debug = False
 urls = (
 '/', 'Index',
-'/login','Login',
+'/login','login.Login',
 '/logout','Log out',
-'/register', 'Register',
-'/view/(\d+)', 'View',
+'/register', 'register.Register',
+'/view/(\d+)', 'view.View',
 '/new', 'New',
 '/delete/(\d+)', 'Delete',
-'/edit/(\d+)', 'Edit',
+'/edit/(\d+)', 'edit.Edit',
 )
 
 ### Templates
@@ -62,6 +62,9 @@ class Login:
     def GET(self):
         """Login page"""
         return render.login()
+
+    def POST(self):
+        return
 
 class Register:
     vpass = form.regexp(r".{3,20}$", 'must be between 3 and 20 characters')
