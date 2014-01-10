@@ -12,8 +12,8 @@
 """ Basic blog using webpy 0.3 """
 import web
 import model
-import hashlib
 from web import form
+
 ### Url mappings
 web.config.debug = False
 urls = (
