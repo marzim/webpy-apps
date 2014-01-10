@@ -58,48 +58,6 @@ class View:
         post = model.get_post(int(id))
         return render.view(post)
 
-class Login:
-    def GET(self):
-        """Login page"""
-        return render.login()
-
-    def POST(self):
-        return
-
-class Register:
-    vpass = form.regexp(r".{3,20}$", 'must be between 3 and 20 characters')
-    vemail = form.regexp(r".*@.*", "must be a valid email address")
-    vuser_req = form.Validator("Username not provided.", bool)
-    vuser_length = form.regexp(r".{3,20}$", 'must be between 3 and 20 characters')
-    vuser_exist = form.Validator("Username already exist.", lambda u: u is None or model.get_user(u.username) is None)
-    vpass_match = form.Validator("Password didn't match", lambda i: i.password == i.password2)
-
-    register_form = form.Form(
-    form.Textbox("username", vuser_req, vuser_length, description="Username"),
-    form.Textbox("email", vemail, description="E-Mail"),
-    form.Password("password", vpass, description="Password"),
-    form.Password("password2", vpass, description="Repeat password"),
-    form.Button("submit", type="submit", description="Register"),
-    validators = [vpass_match, vuser_exist],
-    )
-
-    def GET(self):
-        # do $:f.render() in the template
-        f = self.register_form()
-        return render.registration(f)
-
-    def POST(self):
-        f = self.register_form()
-
-        if not f.validates():
-            return render.registration(f)
-        else:
-            # TODO: should show the home page
-            encrypt_pass = hashlib.sha1("sAlT754-"+f.d.password).hexdigest()
-            model.new_user(f.d.username, encrypt_pass, f.d.email)
-            raise web.seeother('/')
-
-
 class New:
 
     form = web.form.Form(
@@ -133,24 +91,6 @@ class Delete:
 
     def POST(self, id):
         model.del_post(int(id))
-        raise web.seeother('/')
-
-class Edit:
-    def GET(self, id):
-        if not logged():
-            raise web.seeother('/')
-
-        post = model.get_post(int(id))
-        form = New.form()
-        form.fill(post)
-        return render.edit(post, form)
-
-    def POST(self, id):
-        form = New.form()
-        post = model.get_post(int(id))
-        if not form.validates():
-            return render.edit(post, form)
-        model.update_post(int(id), form.d.title, form.d.content)
         raise web.seeother('/')
 
 
