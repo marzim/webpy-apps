@@ -11,10 +11,8 @@
 
 import web
 from web import form
-from blog import render
-from blog import model
 import hashlib
-
+from web.template import render
 
 class Register:
 
