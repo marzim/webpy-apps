@@ -1,17 +1,6 @@
-<!-- Created: 13/12/2013 by mc185104 -->
-<form action="/login" method="POST">
-    <table id="login">
-        <tr>
-            <td>User: </td>
-            <td><input type="text" name="user"></td>
-        </tr>
-        <tr>
-            <td>Password: </td>
-            <td><input type="password" name="passwd"></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" name="LOGIN"></td>
-        </tr>
-    </table>
+$def with (form)
+
+<h1>Login</h1>
+<form method="POST">
+    $:form.render()
 </form>

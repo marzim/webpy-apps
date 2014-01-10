@@ -12,14 +12,13 @@
 """ Basic blog using webpy 0.3 """
 import web
 import model
-from web import form
 
 ### Url mappings
 web.config.debug = False
 urls = (
 '/', 'Index',
 '/login','login.Login',
-'/logout','Log out',
+'/logout','Logout',
 '/register', 'register.Register',
 '/view/(\d+)', 'view.View',
 '/new', 'New',
@@ -31,7 +30,7 @@ urls = (
 
 app = web.application(urls, globals())
 store = web.session.DiskStore('sessions')
-session = web.session.Session(app, store, initializer={'login': 0, 'privilege': 0})
+session = web.session.Session(app, store, initializer={'login': 0, 'privilege': 0, 'user': 'anonymous'})
 
 t_globals = {
  'datestr': web.datestr,
@@ -52,14 +51,14 @@ class Index:
         posts = model.get_posts()
         return render.index(posts)
 
-class View:
-    def GET(self, id):
-        """View single post"""
-        post = model.get_post(int(id))
-        return render.view(post)
+class Logout:
+    def GET(self):
+        session.login = 0
+        session.kill()
+        raise web.seeother('/')
+
 
 class New:
-
     form = web.form.Form(
         web.form.Textbox('title', web.form.notnull,
             size=30,
@@ -83,6 +82,7 @@ class New:
             return render.new(form)
         model.new_post(form.d.title, form.d.content)
         raise web.seeother('/')
+
 
 class Delete:
     def GET(self, id):

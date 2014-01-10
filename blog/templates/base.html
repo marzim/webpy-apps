@@ -15,9 +15,11 @@ $def with (page)
         <li><a href="/">Home</a></li>
         $if session.login == 1:
             <li><a href="/new">New Post</a></li>
+            <li><a href="/logout">Log out [$session.user]</a></li>
+        $else:
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Sign up</a></li>
 
-        <li><a href="/login">Login</a></li>
-        <li><a href="/register">Sign up</a></li>
     </ul>
 
 $:page

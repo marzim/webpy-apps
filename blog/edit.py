@@ -9,10 +9,10 @@
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
 import web
-from web import form
-from web.template import render
+from blog import render, model, logged, New
 
 class Edit:
+
     def GET(self, id):
         if not logged():
             raise web.seeother('/')

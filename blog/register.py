@@ -11,8 +11,7 @@
 
 import web
 from web import form
-from blog import render
-from blog import model
+from blog import render, model
 import hashlib
 
 
