@@ -18,8 +18,8 @@ class Login:
 
     vuser_req = form.Validator("Username not provided.", bool)
     vpass_req = form.Validator("Password not provided.", bool)
-    vuser_exist = form.Validator("Username doesn't exist.", lambda u: u is None or model.get_user(u.username) is not None)
-    vpass_exist = form.Validator("Password didn't match", lambda i: hashlib.sha1("sAlT754-"+i.password).hexdigest() == model.get_user(i.username)['pwd'])
+    vuser_exist = form.Validator("Username doesn't exist.", lambda u: u is None or model.get_user(u.username.strip()) is not None)
+    vpass_exist = form.Validator("Password didn't match", lambda i: hashlib.sha1("sAlT754-"+i.password).hexdigest() == model.get_user(i.username.strip())['pwd'])
 
     login_form = form.Form(
         form.Textbox("username", vuser_req, description="Username"),
@@ -43,7 +43,7 @@ class Login:
         else:
             session.login = 1
             session.privilege = 1
-            session.user = f.d.username
+            session.user = f.d.username.strip()
             raise web.seeother('/')
 
 
