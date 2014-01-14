@@ -22,8 +22,8 @@ class Login:
     vpass_exist = form.Validator("Password didn't match", lambda i: hashlib.sha1("sAlT754-"+i.password).hexdigest() == model.get_user(i.username.strip())['pwd'])
 
     login_form = form.Form(
-        form.Textbox("username", vuser_req, description="Username"),
-        form.Password("password", vpass_req, description="Password"),
+        form.Textbox("username", description="Username"),
+        form.Password("password", description="Password"),
         form.Button("submit", type="submit", description="Login"),
         validators = [vuser_exist, vpass_exist],
         )
@@ -41,7 +41,7 @@ class Login:
         if not f.validates():
             return render.login(f)
         else:
-            session.login = 1
+            session.login = model.get_user(f.d.username.strip())['id']
             session.privilege = 1
             session.user = f.d.username.strip()
             raise web.seeother('/')

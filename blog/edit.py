@@ -9,7 +9,7 @@
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
 import web
-from blog import render, model, logged, New
+from blog import render, model, logged, New, session
 
 class Edit:
 
@@ -17,10 +17,13 @@ class Edit:
         if not logged():
             raise web.seeother('/')
 
-        post = model.get_post(int(id))
-        form = New.form()
-        form.fill(post)
-        return render.edit(post, form)
+        try:
+            post = model.get_post(int(id), session.login)
+            form = New.form()
+            form.fill(post)
+            return render.edit(post, form)
+        except:
+            None
 
     def POST(self, id):
         form = New.form()

@@ -27,7 +27,6 @@ urls = (
 )
 
 ### Templates
-
 app = web.application(urls, globals())
 store = web.session.DiskStore('sessions')
 session = web.session.Session(app, store, initializer={'login': 0, 'privilege': 0, 'user': 'anonymous'})
@@ -40,7 +39,7 @@ t_globals = {
 render = web.template.render('/home/marzim83/myblog/webpy-apps/blog/templates', base='base', globals=t_globals)
 
 def logged():
-    if session.login == 1:
+    if session.login > 0:
         return True
     else:
         return False
@@ -48,8 +47,11 @@ def logged():
 class Index:
     def GET(self):
         """Show page"""
-        posts = model.get_posts()
-        return render.index(posts)
+        if logged():
+            posts = model.get_posts(session.login)
+            return render.index(posts)
+        else:
+            raise web.seeother('/login')
 
 class Logout:
     def GET(self):
@@ -80,7 +82,7 @@ class New:
         form = self.form()
         if not form.validates():
             return render.new(form)
-        model.new_post(form.d.title, form.d.content)
+        model.new_post(form.d.title, form.d.content, session.login)
         raise web.seeother('/')
 
 

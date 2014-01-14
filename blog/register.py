@@ -11,7 +11,7 @@
 
 import web
 from web import form
-from blog import render, model
+from blog import render, model, logged, session
 import hashlib
 
 
@@ -35,8 +35,11 @@ class Register:
 
     def GET(self):
         # do $:f.render() in the template
-        f = self.register_form()
-        return render.registration(f)
+        if not logged():
+            f = self.register_form()
+            return render.registration(f)
+        else:
+            raise web.seeother('/')
 
     def POST(self):
         f = self.register_form()
@@ -47,4 +50,7 @@ class Register:
             # TODO: should show the home page
             encrypt_pass = hashlib.sha1("sAlT754-"+f.d.password).hexdigest()
             model.new_user(f.d.username, encrypt_pass, f.d.email)
+            session.user = f.d.username.strip()
+            session.privilege = 1
+            session.login = model.get_user(f.d.username.strip())['id']
             raise web.seeother('/')

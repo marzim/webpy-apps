@@ -13,17 +13,20 @@ import web, datetime
 
 db = web.database(dbn='mysql', db='marzim83$blog', user='marzim83', pw='mustard_180', host='mysql.server')
 
-def get_posts():
-    return db.select('entries', order='id DESC')
-
-def get_post(id):
+def get_posts(id):
     try:
-        return db.select('entries', where='id=$id', vars=locals())[0]
+        return db.select('entries', where='userid='+ str(id), order='id DESC')
     except IndexError:
         return None
 
-def new_post(title, text):
-    db.insert('entries', title=title, content=text, posted_on=datetime.datetime.utcnow())
+def get_post(id,uid):
+    try:
+        return db.select('entries', where='id=$id and userid='+ str(uid), vars=locals())[0]
+    except IndexError:
+        return None
+
+def new_post(title, text, userid):
+    db.insert('entries', title=title, content=text, posted_on=datetime.datetime.utcnow(), userid=userid)
 
 def del_post(id):
     db.delete('entries', where="id=$id", vars=locals())
